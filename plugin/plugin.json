@@ -1,0 +1,13 @@
+{
+  "name": "mcp-security-harness",
+  "version": "0.1.0",
+  "description": "OWASP MCP Top 10 security regression testing for your installed MCP servers. Discovers servers, generates attack scenarios, runs them locally, and produces enterprise reports.",
+  "author": {
+    "name": "yunsan",
+    "url": "https://github.com/yunsan"
+  },
+  "homepage": "https://github.com/yunsan/mcp-security-harness",
+  "repository": "https://github.com/yunsan/mcp-security-harness",
+  "license": "Apache-2.0",
+  "keywords": ["owasp", "mcp", "security", "regression-testing", "enterprise"]
+}

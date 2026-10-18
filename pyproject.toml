@@ -3,14 +3,15 @@ requires = ["setuptools>=68"]
 build-backend = "setuptools.build_meta"
 
 [project]
-name = "owasp-agent-security-regression-harness"
-version = "0.2.0"
-description = "OWASP harness for executable security regression testing of agentic applications and MCP-integrated systems."
+name = "mcp-security-harness"
+version = "0.1.0"
+description = "Enterprise MCP security regression testing built on the OWASP Agent Security Regression Harness."
 readme = "README.md"
 requires-python = ">=3.11"
 license = { text = "Apache-2.0" }
 authors = [
-  { name = "Mert Satilmaz", email = "mert.satilmaz@owasp.org" }
+  { name = "Mert Satilmaz", email = "mert.satilmaz@owasp.org" },
+  { name = "yunsan", email = "yunior@tailoredtechnologiesllc.com" }
 ]
 keywords = [
   "owasp",
@@ -41,6 +42,10 @@ openai-agents = ["openai-agents"]
 langchain = ["langchain", "langgraph"]
 mcp = ["mcp>=1.12.4,<2"]
 adapters = ["openai-agents", "langchain", "langgraph", "mcp>=1.12.4,<2"]
+anthropic = ["anthropic>=1.0"]
+openai = ["openai>=1.0"]
+html = ["jinja2>=3.1"]
+all = ["anthropic>=1.0", "openai>=1.0", "jinja2>=3.1"]
 
 [project.urls]
 Homepage = "https://github.com/OWASP/Agent-Security-Regression-Harness"
@@ -49,6 +54,7 @@ Issues = "https://github.com/OWASP/Agent-Security-Regression-Harness/issues"
 
 [project.scripts]
 agent-harness = "agent_harness.cli:main"
+mcp-harness = "mcp_security_harness.cli:main"
 
 [tool.setuptools.packages.find]
 where = ["src"]

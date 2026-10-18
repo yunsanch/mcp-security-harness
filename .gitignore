@@ -35,3 +35,6 @@ Thumbs.db
 # Claude local mentor/config files
 .claude/
 CLAUDE.md
+ANTHROPIC_API_KEY
+.env
+results/
