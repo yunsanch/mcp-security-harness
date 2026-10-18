@@ -3,7 +3,7 @@
 from __future__ import annotations
 
 import html as _html
-from datetime import datetime, timezone
+from datetime import UTC, datetime
 from pathlib import Path
 
 
@@ -31,7 +31,7 @@ def generate_html_report(
     out_path = Path(out_path)
     out_path.parent.mkdir(parents=True, exist_ok=True)
 
-    timestamp = datetime.now(tz=timezone.utc).strftime("%Y-%m-%d %H:%M:%S UTC")
+    timestamp = datetime.now(tz=UTC).strftime("%Y-%m-%d %H:%M:%S UTC")
     total = len(results)
 
     counts = {"pass": 0, "fail": 0, "error": 0, "not_run": 0}
@@ -87,7 +87,8 @@ def generate_html_report(
       color: #fff;
       min-width: 100px;
     }}
-    .card-title {{ font-size: 0.75rem; text-transform: uppercase; letter-spacing: .05em; opacity: .85; }}
+    .card-title {{ font-size: .75rem; text-transform: uppercase;
+      letter-spacing: .05em; opacity: .85; }}
     .card-count {{ font-size: 2rem; font-weight: 700; margin-top: .25rem; }}
     .card-pass   {{ background: #27ae60; }}
     .card-fail   {{ background: #e74c3c; }}
@@ -247,7 +248,8 @@ def _build_assertions(assertions: list[dict]) -> str:
         items.append(
             f'<li>'
             f'<span class="assert-id">{_e(a_id)}</span> '
-            f'<span class="badge badge-{safe_result}" style="font-size:.7rem;">{_e(a_result)}</span>'
+            f'<span class="badge badge-{safe_result}"'
+            f' style="font-size:.7rem;">{_e(a_result)}</span>'
             + (f' <span class="assert-evidence">{_e(str(evidence))}</span>' if evidence else "")
             + "</li>"
         )

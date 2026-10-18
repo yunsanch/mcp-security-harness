@@ -4,10 +4,7 @@ from __future__ import annotations
 
 from pathlib import Path
 
-import pytest
-
 from mcp_security_harness.reporting.html import generate_html_report
-
 
 # ---------------------------------------------------------------------------
 # Fixtures / helpers

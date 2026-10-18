@@ -4,7 +4,7 @@ from __future__ import annotations
 
 import json
 import re
-from datetime import datetime, timezone
+from datetime import UTC, datetime
 from pathlib import Path
 
 from mcp_security_harness.discovery.config import MCPInventory, MCPServer
@@ -92,6 +92,6 @@ def discover_from_claude_code(claude_dir: Path) -> MCPInventory:
 
     return MCPInventory(
         servers=servers,
-        discovered_at=datetime.now(tz=timezone.utc).isoformat(),
+        discovered_at=datetime.now(tz=UTC).isoformat(),
         source="auto",
     )

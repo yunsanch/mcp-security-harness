@@ -13,7 +13,6 @@ from agent_harness.assertions import evaluate_assertions
 from agent_harness.result import HarnessResult, aggregate_assertion_results
 from agent_harness.scenario import load_scenario
 from agent_harness.trace import Trace
-
 from mcp_security_harness.providers.base import build_tools_from_scenario, build_user_message
 
 SYSTEM_PROMPT = (

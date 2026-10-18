@@ -10,7 +10,6 @@ import pytest
 from mcp_security_harness.discovery.claude_code import _normalize_name, discover_from_claude_code
 from mcp_security_harness.discovery.config import MCPInventory
 
-
 # ---------------------------------------------------------------------------
 # Helpers
 # ---------------------------------------------------------------------------

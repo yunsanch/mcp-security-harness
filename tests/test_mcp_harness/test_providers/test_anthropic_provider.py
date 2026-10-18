@@ -6,10 +6,7 @@ from types import SimpleNamespace
 from typing import Any
 from unittest.mock import MagicMock, patch
 
-import pytest
-
 from mcp_security_harness.providers.base import ProviderConfig
-
 
 # ---------------------------------------------------------------------------
 # Helpers to build mock Anthropic SDK response objects
@@ -36,16 +33,18 @@ def _make_response(*blocks: SimpleNamespace) -> MagicMock:
 
 
 @patch.dict("os.environ", {"ANTHROPIC_API_KEY": "sk-test"})
-@patch("mcp_security_harness.providers.anthropic_provider.anthropic")
-def test_run_text_only(mock_anthropic_module: MagicMock) -> None:
+@patch("mcp_security_harness.providers.anthropic_provider.importlib.import_module")
+def test_run_text_only(mock_import: MagicMock) -> None:
     """A response with only text blocks should produce empty tool_calls."""
-    from mcp_security_harness.providers.anthropic_provider import AnthropicProvider
-
+    mock_anthropic = MagicMock()
+    mock_import.return_value = mock_anthropic
     mock_client = MagicMock()
-    mock_anthropic_module.Anthropic.return_value = mock_client
+    mock_anthropic.Anthropic.return_value = mock_client
     mock_client.messages.create.return_value = _make_response(
         _text_block("Hello, world!")
     )
+
+    from mcp_security_harness.providers.anthropic_provider import AnthropicProvider
 
     config = ProviderConfig(
         provider_type="anthropic",
@@ -67,17 +66,19 @@ def test_run_text_only(mock_anthropic_module: MagicMock) -> None:
 
 
 @patch.dict("os.environ", {"ANTHROPIC_API_KEY": "sk-test"})
-@patch("mcp_security_harness.providers.anthropic_provider.anthropic")
-def test_run_with_tool_call(mock_anthropic_module: MagicMock) -> None:
+@patch("mcp_security_harness.providers.anthropic_provider.importlib.import_module")
+def test_run_with_tool_call(mock_import: MagicMock) -> None:
     """A tool_use block should appear in tool_calls with correct canonical name."""
-    from mcp_security_harness.providers.anthropic_provider import AnthropicProvider
-
+    mock_anthropic = MagicMock()
+    mock_import.return_value = mock_anthropic
     mock_client = MagicMock()
-    mock_anthropic_module.Anthropic.return_value = mock_client
+    mock_anthropic.Anthropic.return_value = mock_client
     mock_client.messages.create.return_value = _make_response(
         _tool_use_block("toolu_01", "read_file", {"path": "/etc/passwd"}),
         _text_block("Done."),
     )
+
+    from mcp_security_harness.providers.anthropic_provider import AnthropicProvider
 
     config = ProviderConfig(
         provider_type="anthropic",
@@ -103,22 +104,16 @@ def test_run_with_tool_call(mock_anthropic_module: MagicMock) -> None:
     assert tc["name"] == "read_file"
     assert tc["input"] == {"path": "/etc/passwd"}
 
-    # Canonical name mapping: tool_id_to_canonical("toolu_01", tool_calls) == "read_file"
-    from mcp_security_harness.providers.base import tool_id_to_canonical
-    assert tool_id_to_canonical("toolu_01", trace["tool_calls"]) == "read_file"
-
     # Goal event should be emitted because read_file is in allowed_tools
     assert any(e["type"] == "goal_achieved" and e["tool"] == "read_file" for e in trace["events"])
 
 
 @patch.dict("os.environ", {"ANTHROPIC_API_KEY": "sk-test"})
-@patch("mcp_security_harness.providers.anthropic_provider.anthropic")
-def test_workspace_header(mock_anthropic_module: MagicMock) -> None:
+@patch("mcp_security_harness.providers.anthropic_provider.importlib.import_module")
+def test_workspace_header(mock_import: MagicMock) -> None:
     """extra_headers from ProviderConfig should be forwarded to the Anthropic client."""
-    from mcp_security_harness.providers.anthropic_provider import AnthropicProvider
-
-    mock_client = MagicMock()
-    mock_anthropic_module.Anthropic.return_value = mock_client
+    mock_anthropic = MagicMock()
+    mock_import.return_value = mock_anthropic
 
     workspace_headers = {"anthropic-beta": "my-workspace-id"}
     config = ProviderConfig(
@@ -128,9 +123,10 @@ def test_workspace_header(mock_anthropic_module: MagicMock) -> None:
         extra_headers=workspace_headers,
     )
 
+    from mcp_security_harness.providers.anthropic_provider import AnthropicProvider
     AnthropicProvider(config)
 
-    mock_anthropic_module.Anthropic.assert_called_once_with(
+    mock_anthropic.Anthropic.assert_called_once_with(
         api_key="sk-test",
         default_headers=workspace_headers,
     )

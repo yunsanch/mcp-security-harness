@@ -2,10 +2,9 @@
 
 from __future__ import annotations
 
+import importlib
 import os
 from typing import Any
-
-import anthropic
 
 from mcp_security_harness.providers.base import (
     BaseProvider,
@@ -14,12 +13,26 @@ from mcp_security_harness.providers.base import (
     tool_id_to_canonical,
 )
 
+ANTHROPIC_INSTALL_HINT = (
+    "Anthropic SDK is not installed. "
+    "Install it with: pip install 'mcp-security-harness[anthropic]'"
+)
+
+
+def _load_anthropic() -> Any:
+    """Load the anthropic module lazily."""
+    try:
+        return importlib.import_module("anthropic")
+    except ImportError as exc:
+        raise RuntimeError(ANTHROPIC_INSTALL_HINT) from exc
+
 
 class AnthropicProvider(BaseProvider):
     """Provider backed by the Anthropic Messages API."""
 
     def __init__(self, config: ProviderConfig) -> None:
         super().__init__(config)
+        anthropic = _load_anthropic()
         api_key = os.environ.get(config.api_key_env, "")
         if not api_key:
             raise ValueError(

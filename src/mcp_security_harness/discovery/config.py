@@ -3,7 +3,7 @@
 from __future__ import annotations
 
 from dataclasses import dataclass
-from datetime import datetime, timezone
+from datetime import UTC, datetime
 from pathlib import Path
 
 import yaml
@@ -68,6 +68,6 @@ def load_mcp_config(path: Path) -> MCPInventory:
 
     return MCPInventory(
         servers=tuple(servers),
-        discovered_at=datetime.now(tz=timezone.utc).isoformat(),
+        discovered_at=datetime.now(tz=UTC).isoformat(),
         source="config",
     )

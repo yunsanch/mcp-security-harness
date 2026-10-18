@@ -8,8 +8,7 @@ from unittest.mock import MagicMock
 
 import yaml
 
-from mcp_security_harness.runner import discover_scenario_files, run_scenario_local
-
+from mcp_security_harness.runner import run_scenario_local
 
 # ---------------------------------------------------------------------------
 # Helpers

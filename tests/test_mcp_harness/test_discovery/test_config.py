@@ -9,7 +9,6 @@ import yaml
 
 from mcp_security_harness.discovery.config import MCPInventory, MCPServer, load_mcp_config
 
-
 # ---------------------------------------------------------------------------
 # Helpers
 # ---------------------------------------------------------------------------
@@ -31,7 +30,12 @@ class TestLoadMCPConfig:
             tmp_path / "mcp.yaml",
             {
                 "servers": [
-                    {"id": "github", "tools": ["search_code", "create_pr"], "trust": "high", "tier": 1},
+                    {
+                        "id": "github",
+                        "tools": ["search_code", "create_pr"],
+                        "trust": "high",
+                        "tier": 1,
+                    },
                     {"id": "slack", "tools": ["send_message"]},
                 ]
             },

@@ -6,10 +6,7 @@ import json
 from typing import Any
 from unittest.mock import MagicMock, patch
 
-import pytest
-
 from mcp_security_harness.providers.base import ProviderConfig
-
 
 # ---------------------------------------------------------------------------
 # Helpers to build mock OpenAI response objects

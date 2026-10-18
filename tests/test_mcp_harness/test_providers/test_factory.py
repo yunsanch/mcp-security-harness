@@ -14,8 +14,12 @@ class TestCreateProvider:
     """Unit tests for create_provider()."""
 
     @patch.dict("os.environ", {"ANTHROPIC_API_KEY": "test-anthropic-key"})
-    def test_create_anthropic(self):
+    @patch("mcp_security_harness.providers.anthropic_provider.importlib.import_module")
+    def test_create_anthropic(self, mock_import):
         """create_provider with provider_type='anthropic' returns an AnthropicProvider."""
+        from unittest.mock import MagicMock
+        mock_anthropic = MagicMock()
+        mock_import.return_value = mock_anthropic
         from mcp_security_harness.providers.anthropic_provider import AnthropicProvider
 
         config = ProviderConfig(provider_type="anthropic", model="claude-sonnet-4-5")

@@ -11,7 +11,6 @@ from typing import Any
 
 from mcp_security_harness import __version__
 
-
 # ---------------------------------------------------------------------------
 # .env loader
 # ---------------------------------------------------------------------------
@@ -28,7 +27,7 @@ def _load_env_file() -> None:
     if not env_path.exists():
         return
 
-    for lineno, raw_line in enumerate(env_path.read_text(encoding="utf-8").splitlines(), 1):
+    for _lineno, raw_line in enumerate(env_path.read_text(encoding="utf-8").splitlines(), 1):
         line = raw_line.strip()
         if not line or line.startswith("#"):
             continue
@@ -291,7 +290,6 @@ def _cmd_run(args: argparse.Namespace) -> int:
         return 1
 
     total = len(scenario_files)
-    model_label = args.model or "(default)"
     print(f"mcp-harness v{__version__} — {total} scenarios, provider={args.provider}\n")
 
     out_dir = Path(args.out_dir) if args.out_dir else None
@@ -365,7 +363,7 @@ def _cmd_scan(args: argparse.Namespace) -> int:
     """Full pipeline: discover → generate → run → report."""
     from mcp_security_harness.discovery.claude_code import discover_from_claude_code
     from mcp_security_harness.discovery.config import load_mcp_config
-    from mcp_security_harness.runner import discover_scenario_files, run_scenario_local
+    from mcp_security_harness.runner import run_scenario_local
     from mcp_security_harness.scenarios.generator import generate_scenarios
 
     out_dir = Path(args.out_dir)

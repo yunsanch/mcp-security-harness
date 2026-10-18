@@ -38,7 +38,7 @@ class BaseProvider:
     New code should implement the :class:`Provider` Protocol instead.
     """
 
-    def __init__(self, config: "ProviderConfig") -> None:
+    def __init__(self, config: ProviderConfig) -> None:
         self.config = config
 
 
@@ -57,7 +57,7 @@ class ProviderConfig:
     extra: dict[str, Any] = field(default_factory=dict)
 
     @staticmethod
-    def from_dict(raw: dict[str, Any]) -> "ProviderConfig":
+    def from_dict(raw: dict[str, Any]) -> ProviderConfig:
         """Build a ProviderConfig from a raw dict with smart per-provider defaults."""
         provider_type: str = raw.get("type", raw.get("provider_type", "anthropic"))
         defaults = _PROVIDER_DEFAULTS.get(provider_type, _GENERIC_DEFAULTS)

@@ -13,7 +13,6 @@ from mcp_security_harness.providers.base import (
     tool_id_to_canonical,
 )
 
-
 # ---------------------------------------------------------------------------
 # ProviderConfig.from_dict
 # ---------------------------------------------------------------------------
